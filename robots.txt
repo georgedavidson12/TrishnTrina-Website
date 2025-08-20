@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://trishntrina.co.uk/sitemap.xml
