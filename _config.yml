@@ -1,0 +1,4 @@
+title: Trish N Trina
+permalink: pretty
+plugins:
+  - jekyll-redirect-from
