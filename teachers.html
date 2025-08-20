@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trish N Trina Performers Academy</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="Images/favicon_io/apple-touch-icon.png?v=2">
+  <link rel="icon" type="image/png" sizes="32x32" href="Images/favicon_io/favicon-32x32.png?v=2">
+  <link rel="icon" type="image/png" sizes="16x16" href="Images/favicon_io/favicon-16x16.png?v=2">
+  <link rel="manifest" href="Images/favicon_io/site.webmanifest?v=2">
+  <link rel="shortcut icon" href="Images/favicon_io/favicon.ico?v=2" type="image/x-icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f2f2f2;
+      color: #333;
+      text-align: center;
+    }
+
+    header {
+      background-color: #ffffff;
+      padding: 0.5rem 0 0.1rem 0;
+      width: 100%;
+      position: relative;
+    }
+
+    .banner-logo {
+      width: 100%;
+      text-align: center;
+      margin: 0;
+      padding-bottom: 0;
+    }
+
+    .banner-logo img {
+      display: block;
+      margin: 0 auto;
+      max-width: 320px;
+      height: auto;
+      max-height: 120px;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 0.5rem 1rem;
+      background-color: #ffffff;
+      border-bottom: 4px solid #FFEB3B;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #111;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    nav a:hover {
+      color: #FFEB3B;
+    }
+
+    .carousel {
+      position: relative;
+      height: 400px;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      /* background-size removed, now set inline */
+      background-color: white;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .slide::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      z-index: 0;
+    }
+
+    .slide > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .slide.active {
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .overlay {
+      position: absolute;
+      bottom: 20%;
+      left: 10%;
+      color: white;
+      background-color: rgba(0,0,0,0.5);
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      max-width: 80%;
+    }
+
+    .slide-button {
+      display: inline-block;
+      margin-top: 1rem;
+      background: #FFEB3B;
+      color: white;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+
+    .section {
+      padding: 3rem 1rem;
+      background: #fff;
+      width: 100%;
+      margin: 1rem auto;
+      border-top: 5px solid #f2f2f2;
+      box-sizing: border-box;
+      border-radius: 0;
+    }
+    .section:first-of-type {
+      border-top: none;
+    }
+
+    .section h2 {
+      color: #FFEB3B;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .section p {
+      max-width: 800px;
+      margin: auto;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .cta-button {
+      display: inline-block;
+      margin-top: 1rem;
+      background: #FFEB3B;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 4px;
+    }
+
+    footer {
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+
+    footer > div {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+    }
+
+    @media (max-width: 700px) {
+      footer > div {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2rem;
+      }
+      footer > div > div {
+        padding: 0 !important;
+        text-align: left !important;
+        align-items: flex-start !important;
+      }
+    }
+
+    .carousel-nav {
+      position: absolute;
+      left: 20px;
+      bottom: 20px;
+      top: auto;
+      transform: none;
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      z-index: 2;
+    }
+
+    .carousel-dot {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .carousel-dot:hover,
+    .carousel-dot.active {
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.4);
+      color: white;
+      border: none;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      font-size: 2rem;
+      z-index: 3;
+      border-radius: 50%;
+      transition: background-color 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      transition: background-color 0.3s ease, opacity 0.3s ease;
+    }
+
+    .carousel:hover .carousel-arrow {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .carousel-arrow:hover {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .carousel-arrow.left {
+      left: 20px;
+    }
+
+    .carousel-arrow.right {
+      right: 20px;
+    }
+
+    /* Footer social links hover color */
+    footer a:hover {
+      color: #FFEB3B !important;
+    }
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-40XVRC4JZD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-40XVRC4JZD');
+  </script>
+</head>
+<body>
+
+  <header>
+    <div class="banner-logo">
+      <a href="index.html">
+        <img src="Images/Banner1.png" alt="Trish N Trina Logo">
+      </a>
+    </div>
+  </header>
+
+  <nav>
+    <a href="about.html">About Us</a>
+    <a href="teachers.html">Teachers</a>
+    <a href="syllabus.html">Syllabus</a>
+    <a href="timetable.html">Timetable</a>
+    <a href="information.html">Information</a>
+    <a href="testimonials.html">Testimonials</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+
+  <section style="background-color: #ffffff; color: #FFEB3B; padding: 2rem 1rem; text-align: center;">
+    <h1 style="margin: 0; font-size: 2.5rem;">Our Teachers</h1>
+  </section>
+
+  <section class="section" style="padding: 1rem 1rem; margin-top: 0.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 2rem; max-width: 1400px; margin: auto;">
+      <div style="flex: 1; min-width: 250px; max-width: 300px;">
+        <div style="display: flex; align-items: center;">
+          <img src="Images/trish.png" alt="Miss Trish Robson" style="width: 100%; border-radius: 10px; object-fit: cover; margin-top: 2rem;">
+        </div>
+      </div>
+      <div style="flex: 2; min-width: 250px; max-width: 800px; text-align: left;">
+        <h2 style="color: #FFEB3B;">MISS TRISH ROBSON</h2>
+        <p style="font-size: 0.85rem; margin-bottom: 1rem;">
+          Trish is an experienced dance teacher with over 42 years of teaching across all ages and abilities. Her work spans tap, jazz, freestyle and ballet, and she also holds qualifications in street, contemporary and cheer dance. While she specialises in tap and pre‑school movement & dance, her teaching follows the NCDTA, IDTA and I‑Path syllabi, ensuring structured progression and high standards.<br><br>
+          Trish’s philosophy is simple: to provide a positive, supportive environment where students can enjoy themselves, nurture their creativity, and develop a lifelong love of dance.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section" style="padding: 1rem 1rem; margin-top: 0.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 2rem; max-width: 1400px; margin: auto; flex-direction: row-reverse;">
+      <div style="flex: 1; min-width: 250px; max-width: 300px;">
+        <div style="display: flex; align-items: center;">
+          <img src="Images/trina.png" alt="Miss Trina Walker" style="width: 100%; border-radius: 10px; object-fit: cover; margin-top: 2rem;">
+        </div>
+      </div>
+      <div style="flex: 2; min-width: 250px; max-width: 800px; text-align: left;">
+        <h2 style="color: #FFEB3B;">MISS TRINA WALKER</h2>
+        <p style="font-size: 0.85rem; margin-bottom: 1rem;">
+          Trina is a dynamic and inspiring dance instructor specialising in freestyle and jazz, with over four decades of teaching experience. From high‑energy beginners’ classes to challenging sessions for advanced dancers, she brings a powerful blend of technique, creativity, and confidence‑building to every class.<br><br>
+          Her teaching style is rooted in musicality, expressive performance, and personal growth. Whether students are just starting out or refining their skills, her classes are known for a supportive atmosphere and high‑impact choreography that encourages dancers to explore their full potential.<br><br>
+          She has trained and performed across a wide range of styles, but her heart lies in the freedom of freestyle and the precision of jazz. Trina believes dance is not just about steps — it’s about finding your voice through movement.<br><br>
+          She aims to help dancers unlock their energy, elevate their technique, and dance with purpose.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding: 1rem 1rem; margin-top: 0.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 2rem; max-width: 1400px; margin: auto;">
+      <div style="flex: 1; min-width: 250px; max-width: 300px;">
+        <div style="display: flex; align-items: center;">
+          <img src="Images/nicola.png" alt="Miss Nicola Forster" style="width: 100%; border-radius: 10px; object-fit: cover; margin-top: 2rem;">
+        </div>
+      </div>
+      <div style="flex: 2; min-width: 250px; max-width: 800px; text-align: left;">
+        <h2 style="color: #FFEB3B;">MISS NICOLA FORSTER</h2>
+        <p style="font-size: 0.85rem; margin-bottom: 1rem;">
+          Nicola’s love for dance began when she was just a child — and she’s been dancing ever since!<br><br>
+          Now a qualified teacher of Ballet and Tap (I-Path, NCDTA, Progressing Ballet Technique), she’s passionate about making dance accessible to everyone, regardless of age or ability. For Nicola, dance is so much more than steps and music — it’s a way to boost physical health, mental wellbeing, and social connection.<br><br>
+          Outside the studio, Nicola is a Physics graduate with a background in International Educational Assessment and Research at Durham University.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding: 1rem 1rem; margin-top: 0.5rem; flex-direction: row-reverse;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 2rem; max-width: 1400px; margin: auto; flex-direction: row-reverse;">
+      <div style="flex: 1; min-width: 250px; max-width: 300px;">
+        <div style="display: flex; align-items: center;">
+          <img src="Images/george.png" alt="Mr George Davidson" style="width: 100%; border-radius: 10px; object-fit: cover; margin-top: 2rem;">
+        </div>
+      </div>
+      <div style="flex: 2; min-width: 250px; max-width: 800px; text-align: left;">
+        <h2 style="color: #FFEB3B;">MR GEORGE DAVIDSON</h2>
+        <p style="font-size: 0.85rem; margin-bottom: 1rem;">
+          George’s dance journey began at the age of three, when his mum took him to watch his sister in class. She was crying because she wanted to take the tap shoes off, while George was crying to put them on, and he’s been dancing  at Trish N Trina ever since!<br><br>
+          With 18 years of experience, George has taken every NCDTA tap grade, achieved freestyle awards up to the President’s Award, and is an Associate of the NCDTA's Theatre Branch. Alongside his training, George has performed on stages across the UK, including Sadler’s Wells, Theatre Royal Drury Lane, and at the British Grand Prix at Silverstone. He has played a variety of roles such as Jean Valjean in Les Misérables and Bert in Mary Poppins.<br><br>
+          In addition to dance, George is a pianist, clarinettist, and guitarist, and is currently studying Mathematics at university. Outside the studio, he also plays cricket and enjoys working on technology projects.<br><br>
+          He now teaches tap at Trish & Trina, bringing his years of experience to the next generation of dancers.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding: 1rem 1rem; margin-top: 0.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 2rem; max-width: 1400px; margin: auto;">
+      <div style="flex: 1; min-width: 250px; max-width: 300px;">
+        <div style="display: flex; align-items: center;">
+          <img src="Images/christina.png" alt="Miss Christina Burnside" style="width: 100%; border-radius: 10px; object-fit: cover; margin-top: 2rem;">
+        </div>
+      </div>
+      <div style="flex: 2; min-width: 250px; max-width: 800px; text-align: left;">
+        <h2 style="color: #FFEB3B;">MISS CHRISTINA BURNSIDE</h2>
+        <p style="font-size: 0.85rem; margin-bottom: 1rem;">
+          A full biography will be available soon.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding: 1rem 1rem; margin-top: 0.5rem; flex-direction: row-reverse;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 2rem; max-width: 1400px; margin: auto; flex-direction: row-reverse;">
+      <div style="flex: 1; min-width: 250px; max-width: 300px;">
+        <div style="display: flex; align-items: center;">
+          <img src="Images/lacey.png" alt="Miss Lacey Burnside" style="width: 100%; border-radius: 10px; object-fit: cover; margin-top: 2rem;">
+        </div>
+      </div>
+      <div style="flex: 2; min-width: 250px; max-width: 800px; text-align: left;">
+        <h2 style="color: #FFEB3B;">MISS LACEY BURNSIDE</h2>
+        <p style="font-size: 0.85rem; margin-bottom: 1rem;">
+          Lacey brings nearly 15 years of dance experience, having trained in tap, ballet, jazz and freestyle — with freestyle as her true specialism. Her dedication and passion have taken her to the highest levels of competition, including four appearances at the World Championships and achieving the top category level in freestyle.<br><br>
+She has performed at some of the world’s most iconic venues and events, including the Royal Albert Hall, Disneyland, Wembley Stadium and Formula 1, alongside numerous appearances in London.<br><br>
+Currently training with the NCDTA to become a qualified dance teacher, Lacey is committed to inspiring dancers of all ages. For her, teaching is about more than technique — it’s about encouraging students to chase their dreams and creating a safe, supportive space where everyone can express themselves through dance.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding: 1rem 1rem; margin-top: 0.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 2rem; max-width: 1400px; margin: auto;">
+      <div style="flex: 1; min-width: 250px; max-width: 300px;">
+        <div style="display: flex; align-items: center;">
+          <img src="Images/ella.png" alt="Miss Ella Torrence" style="width: 100%; border-radius: 10px; object-fit: cover; margin-top: 2rem;">
+        </div>
+      </div>
+      <div style="flex: 2; min-width: 250px; max-width: 800px; text-align: left;">
+        <h2 style="color: #FFEB3B;">MISS ELLA TORRENCE</h2>
+        <p style="font-size: 0.85rem; margin-bottom: 1rem;">
+          Ella is a student teacher with a passion for sharing the art of dance. She teaches all styles of dance, bringing energy and creativity into every class. Over the years, she has achieved success in freestyle, winning championships, and she has completed NCDTA exams along with many other achievements in her dance training.<br><br>
+          Ella loves dance because it allows her to express herself and stay creative. She has chosen to teach to inspire the next generation of dancers, help others build confidence, and pass on the knowledge and passion she has gained through her own journey.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding: 1rem 1rem; margin-top: 0.5rem; flex-direction: row-reverse;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 2rem; max-width: 1400px; margin: auto; flex-direction: row-reverse;">
+      <div style="flex: 1; min-width: 250px; max-width: 300px;">
+        <div style="display: flex; align-items: center;">
+          <img src="Images/eva.png" alt="Miss Eva Mcshae" style="width: 100%; border-radius: 10px; object-fit: cover; margin-top: 2rem;">
+        </div>
+      </div>
+      <div style="flex: 2; min-width: 250px; max-width: 800px; text-align: left;">
+        <h2 style="color: #FFEB3B;">MISS EVA MCSHAE</h2>
+        <p style="font-size: 0.85rem; margin-bottom: 1rem;">
+          A full biography will be available soon.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding: 1rem 1rem; margin-top: 0.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 2rem; max-width: 1400px; margin: auto;">
+      <div style="flex: 1; min-width: 250px; max-width: 300px;">
+        <div style="display: flex; align-items: center;">
+          <img src="Images/kayleigh.jpg" alt="Miss Kayleigh Hunter" style="width: 100%; border-radius: 10px; object-fit: cover; margin-top: 2rem;">
+        </div>
+      </div>
+      <div style="flex: 2; min-width: 250px; max-width: 800px; text-align: left;">
+        <h2 style="color: #FFEB3B;">MISS KAYLEIGH HUNTER</h2>
+        <p style="font-size: 0.85rem; margin-bottom: 1rem;">
+          A recent graduate of Performers College, Kayleigh brings a wealth of performance experience and a deep love for teaching to the stage and the studio. Her journey in the performing arts began early, with rigorous training that included numerous dance exams with the RAD, NCDTA, and IDTA, as well as competing in dance competitions.<br><br>
+          Before her degree, Kayleigh honed her skills at the Worx Academy, completing a BTEC in Musical Theatre. This strong foundation, combined with her professional training at Performers College, has equipped her with a comprehensive understanding of the industry. During this time, Kayleigh also started her teaching career, finding joy in guiding students at local dance schools. As an associate of the NCDTA, she is committed to helping students develop not only their technical skills but also their confidence and artistry.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background: #111; color: #fff; padding: 2rem; font-size: 0.9rem;">
+    <div style="max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 2rem;">
+      <div style="flex: 1; min-width: 250px; margin-bottom: 1rem;">
+        <p style="text-align: left;">
+          <img src="Images/phone.png" alt="Phone" style="vertical-align: middle; height: 24px; margin-right: 8px;">
+          <a href="tel:07761633157" style="color: #fff; text-decoration: none;">07761 633157</a>
+        </p>
+        <p style="text-align: left;">
+          <img src="Images/email.png" alt="Email" style="vertical-align: middle; height: 24px; margin-right: 8px;">
+          <a href="mailto:trishdanceacademy@gmail.com" style="color: #fff; text-decoration: none;">trishdanceacademy@gmail.com</a>
+        </p>
+        <div style="margin-top: 1rem; text-align: left;">
+          <p style="margin: 0.5rem 0; font-size: 0.85rem;">
+            <a href="https://www.facebook.com/trishntrina" style="color: #fff; text-decoration: none; display: inline-flex; align-items: center; margin-right: 16px;">
+              <img src="Images/facebook.png" alt="Facebook" style="height: 24px; margin-right: 6px;">
+              Facebook
+            </a>
+            <a href="https://www.instagram.com/tntperformersacademy/" style="color: #fff; text-decoration: none; display: inline-flex; align-items: center;">
+              <img src="Images/instagram.png" alt="Instagram" style="height: 24px; margin-right: 6px;">
+              Instagram
+            </a>
+          </p>
+        </div>
+      </div>
+      <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; text-align: right; margin-bottom: 1rem;">
+        <p>&copy; 2025 Trish N Trina Performers Academy</p>
+        <p>Website designed by George Davidson</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+  const dots = document.querySelectorAll('.carousel-dot');
+
+  function showSlide(index) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('mouseenter', () => {
+      const index = parseInt(dot.getAttribute('data-index'));
+      showSlide(index);
+    });
+  });
+
+  let intervalId = setInterval(() => {
+    showSlide((current + 1) % slides.length);
+  }, 5000);
+
+  function resetInterval() {
+    clearInterval(intervalId);
+    intervalId = setInterval(() => {
+      showSlide((current + 1) % slides.length);
+    }, 5000);
+  }
+
+  function showPreviousSlide() {
+    showSlide((current - 1 + slides.length) % slides.length);
+    resetInterval();
+  }
+
+  function showNextSlide() {
+    showSlide((current + 1) % slides.length);
+    resetInterval();
+  }
+</script>
+</html>

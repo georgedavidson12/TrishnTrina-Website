@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Maps API key meta removed -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <title>Trish N Trina Performers Academy</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="Images/favicon_io/apple-touch-icon.png?v=2">
+  <link rel="icon" type="image/png" sizes="32x32" href="Images/favicon_io/favicon-32x32.png?v=2">
+  <link rel="icon" type="image/png" sizes="16x16" href="Images/favicon_io/favicon-16x16.png?v=2">
+  <link rel="manifest" href="Images/favicon_io/site.webmanifest?v=2">
+  <link rel="shortcut icon" href="Images/favicon_io/favicon.ico?v=2" type="image/x-icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    a {
+      text-decoration: none;
+    }
+
+    /* Ensure layout widths include padding/gaps and prevent tiny horizontal overflow */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { overflow-x: hidden; }
+    #contact-maps, #contact-maps-2 { max-width: 100%; overflow: hidden; }
+    #contact-maps > div, #contact-maps-2 > div { flex: 1 1 0; }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f2f2f2;
+      color: #333;
+      text-align: center;
+    }
+
+    header {
+      background-color: #ffffff;
+      padding: 0.5rem 0 0.1rem 0; /* Less bottom padding */
+      width: 100%;
+      position: relative;
+    }
+
+    .banner-logo {
+      width: 100%;
+      text-align: center;
+      margin: 0;
+      padding-bottom: 0;
+    }
+
+    .banner-logo img {
+      display: block;
+      margin: 0 auto;
+      max-width: 320px;
+      height: auto;
+      max-height: 120px;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 0.5rem 1rem;
+      background-color: #ffffff;
+      border-bottom: 5px solid #FFEB3B;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #111;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    nav a:hover {
+      color: #FFEB3B;
+    }
+
+    .carousel {
+      position: relative;
+      height: 400px;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      /* background-size removed, now set inline */
+      background-color: white;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .slide::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      z-index: 0;
+    }
+
+    .slide > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .slide.active {
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .overlay {
+      position: absolute;
+      bottom: 20%;
+      left: 10%;
+      color: white;
+      background-color: rgba(0,0,0,0.5);
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      max-width: 80%;
+    }
+
+    .slide-button {
+      display: inline-block;
+      margin-top: 1rem;
+      background: #b10f1e;
+      color: white;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+
+    .section {
+      padding: 1.0rem 1rem 3rem 1rem;
+      background: #fff;
+      margin-top: 0;
+      border-top: 15px solid #f2f2f2; /* Light grey border above each section */
+    }
+
+    /* Remove border from the first section */
+    .section:first-of-type {
+      border-top: none;
+    }
+
+    .section h2 {
+      color: #FFEB3B;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .section p {
+      max-width: 800px;
+      margin: auto;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .cta-button {
+      display: inline-block;
+      margin-top: 1rem;
+      background: #b10f1e;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 4px;
+    }
+
+    footer {
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+
+    footer > div {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem; /* Increase gap between columns */
+    }
+
+    @media (max-width: 700px) {
+      footer > div {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2rem; /* More vertical space on mobile */
+      }
+      footer > div > div {
+        padding: 0 !important;
+        text-align: left !important;
+        align-items: flex-start !important;
+      }
+    }
+
+    /* ===== Mobile layout fixes ===== */
+    @media (max-width: 700px) {
+      /* Tighter nav spacing on mobile */
+      nav {
+        gap: 1.5rem;
+      }
+      nav a {
+        font-size: 0.95rem;
+      }
+
+      /* Headings and paragraph sizing */
+      .section h2 {
+        font-size: 1.6rem;
+      }
+      .section p {
+        font-size: 1rem;
+        line-height: 1.5;
+        padding: 0 1rem; /* reduce edge collisions */
+      }
+
+      /* Contact header spacing */
+      #contact-header > div { /* the flex row with Phone/Email blocks */
+        gap: 2rem !important;
+      }
+
+      /* Maps: stack vertically and constrain height */
+      #contact-maps, #contact-maps-2 {
+        flex-direction: column !important;
+        height: auto !important;
+        gap: 0.75rem !important;
+        padding: 0 0.5rem !important;
+      }
+      #contact-maps > div, #contact-maps-2 > div {
+        width: 100% !important;
+        min-width: 0 !important;
+        height: auto !important;
+      }
+      .leaflet-map {
+        width: 100% !important;
+        height: 300px !important; /* ensure visible height on mobile */
+        display: block;
+      }
+
+      /* Social links wrap cleanly */
+      #social-media > div {
+        flex-wrap: wrap;
+        gap: 1rem !important;
+      }
+    }
+
+    .carousel-nav {
+      position: absolute;
+      left: 20px;
+      bottom: 20px;
+      top: auto;
+      transform: none;
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      z-index: 2;
+    }
+
+    .carousel-dot {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .carousel-dot:hover,
+    .carousel-dot.active {
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.4);
+      color: white;
+      border: none;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      font-size: 2rem;
+      z-index: 3;
+      border-radius: 50%;
+      transition: background-color 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      transition: background-color 0.3s ease, opacity 0.3s ease;
+    }
+
+    .carousel:hover .carousel-arrow {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .carousel-arrow:hover {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .carousel-arrow.left {
+      left: 20px;
+    }
+
+    .carousel-arrow.right {
+      right: 20px;
+    }
+
+    /* Footer anchor links: remove underline */
+    footer a {
+      text-decoration: none;
+    }
+    /* Footer social links hover color */
+    footer a:hover {
+      color: #FFEB3B !important;
+    }
+
+    #contact-info {
+      background-color: white;
+    }
+
+    #contact-info-top, #contact-info-bottom, #contact-maps, #contact-maps-2 {
+      background-color: white;
+    }
+    .leaflet-container { border-radius: 10px; }
+    .leaflet-container { max-width: 100% !important; }
+
+    /* Small info card on each map, top-right */
+    .leaflet-control.map-info {
+      background: rgba(255,255,255,0.9);
+      color: #333;
+      padding: 0.4rem 0.6rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border: 1px solid rgba(0,0,0,0.06);
+      font-size: 0.85rem;
+      line-height: 1.2;
+      max-width: 220px;
+    }
+    .leaflet-control.map-info h4 {
+      margin: 0 0 0.15rem 0;
+      font-size: 0.95rem;
+      color: #111;
+      font-weight: 600;
+    }
+    .leaflet-control.map-info a {
+      color: #b10f1e;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .leaflet-control.map-info a:hover { text-decoration: underline; }
+
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-40XVRC4JZD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-40XVRC4JZD');
+  </script>
+</head>
+<body>
+
+  <header>
+    <div class="banner-logo">
+      <a href="index.html">
+        <img src="Images/banner1.png" alt="Trish N Trina Logo">
+      </a>
+    </div>
+  </header>
+
+  <nav>
+    <a href="about.html">About Us</a>
+    <a href="teachers.html">Teachers</a>
+    <a href="syllabus.html">Syllabus</a>
+    <a href="timetable.html">Timetable</a>
+    <a href="information.html">Information</a>
+    <a href="testimonials.html">Testimonials</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+
+  <section class="section" id="contact-header" style="padding-bottom: 3.5rem;">
+    <h2>Contact Us</h2>
+    <p style="margin-bottom: 2rem;">We would love to hear from you. Please use the information below to get in touch.</p>
+    <div style="display: flex; justify-content: center; gap: 4rem; flex-wrap: wrap;">
+      <div style="text-align: center;">
+        <p style="margin: 0; font-weight: bold; color: #FFEB3B; font-size: 1.2rem;">Phone</p>
+        <p style="margin: 0 0 1.5rem 0;"><a href="tel:07761633157" style="color: #333; font-size: 1.1rem;">07761 633157</a></p>
+      </div>
+      <div style="text-align: center;">
+        <p style="margin: 0; font-weight: bold; color: #FFEB3B; font-size: 1.2rem;">Email</p>
+        <p style="margin: 0;"><a href="mailto:trishdanceacademy@gmail.com" style="color: #333; font-size: 1.1rem;">trishdanceacademy@gmail.com</a></p>
+      </div>
+    </div>
+  </section>
+  
+
+  <section class="section" id="contact-info-top" style="display: flex; flex-wrap: wrap; justify-content: space-around; background: white; padding: 2rem 0;">
+    <h2 style="width: 100%; text-align: center; color: #FFEB3B; margin-bottom: 2rem;">Find Us</h2>
+    <div style="flex: 0 1 calc(50% - 2rem); text-align: center;">
+      <h3 style="color: #FFEB3B;">Main Studio</h3>
+      <p>The Dance Studio</p>
+      <p>Arts Centre</p>
+      <p>Biddick Lane</p>
+      <p>Washington</p>
+      <p>NE38 8AB</p>
+    </div>
+    <div style="flex: 0 1 calc(50% - 2rem); text-align: center;">
+      <h3 style="color: #FFEB3B;">Hetton Classes</h3>
+      <p>Hetton &amp; Eppleton Community Hall</p>
+      <p>Office Place</p>
+      <p>Hetton-le-Hole</p>
+      <p>Houghton-le-Spring</p>
+      <p>DH5 9JG</p>
+    </div>
+  </section>
+  <section id="contact-maps" style="display: flex; justify-content: space-between; align-items: stretch; width: 100%; height: 360px; background-color: white; gap: 1rem; flex-wrap: wrap; padding: 0 0.5rem;">
+    <div style="flex: 1 1 0; min-width: 300px; height: 100%; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
+      <div id="map-studio" class="leaflet-map" data-title="Main Studio" data-address="The Dance Studio, Arts Centre, Biddick Lane, Washington NE38 8AB" data-lat="54.884805" data-lon="-1.519791" style="width:100%; height:100%;"></div>
+    </div>
+    <div style="flex: 1 1 0; min-width: 300px; height: 100%; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
+      <div id="map-hetton" class="leaflet-map" data-title="Hetton Classes" data-address="Hetton & Eppleton Community Hall, Office Place, Hetton-le-Hole, DH5 9JG" data-lat="54.819958" data-lon="-1.453684" style="width:100%; height:100%;"></div>
+    </div>
+  </section>
+  <section class="section" id="contact-info-bottom" style="display: flex; flex-wrap: wrap; justify-content: space-around; background: white; padding: 2rem 0; border-top: none;">
+    <div style="flex: 0 1 calc(50% - 2rem); text-align: center;">
+      <h3 style="color: #FFEB3B;">Biddick Primary School</h3>
+      <p>Biddick Primary School</p>
+      <p>Windsor Road</p>
+      <p>Washington</p>
+      <p>NE38 6HJ</p>
+    </div>
+    <div style="flex: 0 1 calc(50% - 2rem); text-align: center;">
+      <h3 style="color: #FFEB3B;">Houghton Sports and Wellness Centre</h3>
+      <p>Houghton Sports &amp; Wellness Centre</p>
+      <p>Station Road</p>
+      <p>Houghton-le-Spring</p>
+      <p>DH4 5EN</p>
+    </div>
+  </section>
+  <section id="contact-maps-2" style="display: flex; justify-content: space-between; align-items: stretch; width: 100%; height: 360px; background-color: white; gap: 1rem; flex-wrap: wrap; padding: 0 0.5rem;">
+    <div style="flex: 1 1 0; min-width: 300px; height: 100%; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
+      <div id="map-biddick" class="leaflet-map" data-title="Biddick Primary School" data-address="Biddick Primary School, Kirkham, Biddick Village, Washington NE38 7HQ" data-lat="54.89568" data-lon="-1.52204" style="width:100%; height:100%;"></div>
+    </div>
+    <div style="flex: 1 1 0; min-width: 300px; height: 100%; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
+      <div id="map-houghton" class="leaflet-map" data-title="Houghton Sports & Wellness Centre" data-address="Houghton Sports & Wellness Centre, Station Road, Houghton-le-Spring DH4 5AH" data-lat="54.845216" data-lon="-1.473479" style="width:100%; height:100%;"></div>
+    </div>
+  </section>
+  <div style="height: 1.5rem; background-color: white;"></div>
+
+  <section class="section" id="social-media" style="background: white; padding-top: 1rem;">
+    <h2 style="color: #FFEB3B;">Social Media</h2>
+    <p>Stay connected with us on Facebook and Instagram for the latest news and updates!</p>
+    <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem;">
+      <a href="https://www.facebook.com/trishntrina" target="_blank" style="display: inline-flex; align-items: center; text-decoration: none; color: #333; font-size: 1.1rem;">
+        <img src="Images/facebook.png" alt="Facebook" style="height: 28px; margin-right: 8px;">Facebook
+      </a>
+      <a href="https://www.instagram.com/tntperformersacademy/" target="_blank" style="display: inline-flex; align-items: center; text-decoration: none; color: #333; font-size: 1.1rem;">
+        <img src="Images/instagram.png" alt="Instagram" style="height: 28px; margin-right: 8px;">Instagram
+      </a>
+      <a href="https://wa.me/447761633157" target="_blank" style="display: inline-flex; align-items: center; text-decoration: none; color: #333; font-size: 1.1rem;">
+        <img src="Images/whatsapp.png" alt="WhatsApp" style="height: 24px; width: 24px; margin-right: 8px;">WhatsApp
+      </a>
+      <a href="https://www.tiktok.com/@trish.n.trina_dance" target="_blank" style="display: inline-flex; align-items: center; text-decoration: none; color: #333; font-size: 1.1rem;">
+        <img src="Images/tiktok.png" alt="TikTok" style="height: 24px; width: 24px; margin-right: 8px;">TikTok
+      </a>
+    </div>
+  </section>
+
+  <footer style="background: #111; color: #fff; padding: 2rem; font-size: 0.9rem;">
+    <div style="max-width:1000px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:2rem;">
+      <div style="flex:1; min-width:0; text-align:left;">
+        <p style="text-align: left;">
+          <img src="Images/phone.png" alt="Phone" style="vertical-align: middle; height: 24px; margin-right: 8px;">
+          <a href="tel:07761633157" style="color: #fff; text-decoration: none;">07761 633157</a>
+        </p>
+        <p style="text-align: left;">
+          <img src="Images/email.png" alt="Email" style="vertical-align: middle; height: 24px; margin-right: 8px;">
+          <a href="mailto:trishdanceacademy@gmail.com" style="color: #fff; text-decoration: none;">trishdanceacademy@gmail.com</a>
+        </p>
+        <div style="margin-top: 1rem; text-align: left;">
+          <p style="margin: 0.5rem 0; font-size: 0.85rem;">
+            <a href="https://www.facebook.com/trishntrina" style="color: #fff; text-decoration: none; display: inline-flex; align-items: center; margin-right: 16px;">
+              <img src="Images/facebook.png" alt="Facebook" style="height: 24px; margin-right: 6px;">
+              Facebook
+            </a>
+            <a href="https://www.instagram.com/tntperformersacademy/" style="color: #fff; text-decoration: none; display: inline-flex; align-items: center;">
+              <img src="Images/instagram.png" alt="Instagram" style="height: 24px; margin-right: 6px;">
+              Instagram
+            </a>
+          </p>
+        </div>
+      </div>
+      <div style="flex:1; min-width:0; text-align:right;">
+        <p>&copy; 2025 Trish N Trina Performers Academy</p>
+        <p>Website designed by George Davidson</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+  window.__leafletMaps = window.__leafletMaps || [];
+  // Standard Leaflet red marker icon
+  const redIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+    iconRetinaUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+    shadowAnchor: [12, 41]
+  });
+  // Initialise all Leaflet map containers, using fixed coordinates if present, otherwise geocoding the data-address
+  function initLeafletAddressMap(container) {
+    const address = container.getAttribute('data-address');
+    const title = container.getAttribute('data-title') || address || '';
+    const latAttr = container.getAttribute('data-lat');
+    const lonAttr = container.getAttribute('data-lon');
+
+    // Build Directions URL (falls back to coords if no address)
+    function buildDirectionsHref(lat, lon) {
+      if (address) return 'https://www.google.com/maps?q=' + encodeURIComponent(address);
+      if (lat != null && lon != null) return 'https://www.google.com/maps?q=' + encodeURIComponent(lat + ',' + lon);
+      return '#';
+    }
+
+    function addInfoCard(map, lat, lon) {
+      const Info = L.Control.extend({
+        options: { position: 'topright' },
+        onAdd: function() {
+          const div = L.DomUtil.create('div', 'leaflet-control map-info');
+          const href = buildDirectionsHref(lat, lon);
+          div.innerHTML = `
+            <h4>${title}</h4>
+            ${address ? `<div>${address}</div>` : ''}
+            <div style="margin-top: 0.25rem;"><a href="${href}" target="_blank" rel="noopener">Directions</a></div>
+          `;
+          return div;
+        }
+      });
+      map.addControl(new Info());
+    }
+
+    function attachClickOpen(map, href) {
+      if (!href || href === '#') return;
+
+      // Open Google Maps on a standard click/tap anywhere on the map canvas
+      map.on('click', (e) => {
+        const oe = e.originalEvent;
+        if (oe && oe.target && oe.target.closest && oe.target.closest('.leaflet-control')) return; // ignore clicks on controls
+        window.open(href, '_blank');
+      });
+
+      // Also open when clicking the marker itself (if present)
+      map.eachLayer(layer => {
+        if (layer instanceof L.Marker) {
+          layer.on('click', () => window.open(href, '_blank'));
+        }
+      });
+    }
+
+    // Basic Leaflet map
+    const map = L.map(container, { zoomControl: true });
+    window.__leafletMaps.push(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    if (latAttr && lonAttr) {
+      const lat = parseFloat(latAttr);
+      const lon = parseFloat(lonAttr);
+      map.setView([lat, lon], 15);
+      L.marker([lat, lon], { icon: redIcon }).addTo(map).bindPopup(`<strong>${title}</strong><br>${address || ''}`);
+      addInfoCard(map, lat, lon);
+      attachClickOpen(map, buildDirectionsHref(lat, lon));
+      return;
+    }
+
+    if (!address) {
+      map.setView([54.5, -2.5], 6);
+      addInfoCard(map, null, null);
+      return;
+    }
+
+    // Geocode via Nominatim (no API key required) — fallback only
+    const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(address);
+    fetch(url, { headers: { 'Accept': 'application/json' }})
+      .then(r => r.json())
+      .then(results => {
+        if (results && results[0]) {
+          const lat = parseFloat(results[0].lat);
+          const lon = parseFloat(results[0].lon);
+          map.setView([lat, lon], 15);
+          L.marker([lat, lon], { icon: redIcon }).addTo(map).bindPopup(`<strong>${title}</strong><br>${address}`);
+          addInfoCard(map, lat, lon);
+          attachClickOpen(map, buildDirectionsHref(lat, lon));
+        } else {
+          map.setView([54.5, -2.5], 6);
+          addInfoCard(map, null, null);
+        }
+      })
+      .catch(() => {
+        map.setView([54.5, -2.5], 6);
+        addInfoCard(map, null, null);
+      });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.leaflet-map').forEach(initLeafletAddressMap);
+  });
+</script>
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+  const dots = document.querySelectorAll('.carousel-dot');
+
+  function showSlide(index) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('mouseenter', () => {
+      const index = parseInt(dot.getAttribute('data-index'));
+      showSlide(index);
+    });
+  });
+
+  let intervalId = setInterval(() => {
+    showSlide((current + 1) % slides.length);
+  }, 5000);
+
+  function resetInterval() {
+    clearInterval(intervalId);
+    intervalId = setInterval(() => {
+      showSlide((current + 1) % slides.length);
+    }, 5000);
+  }
+
+  function showPreviousSlide() {
+    showSlide((current - 1 + slides.length) % slides.length);
+    resetInterval();
+  }
+
+  function showNextSlide() {
+    showSlide((current + 1) % slides.length);
+    resetInterval();
+  }
+</script>
+<script>
+(function(){
+  let t;
+  function invalidateAll(){
+    if (!window.__leafletMaps) return;
+    window.__leafletMaps.forEach(m => { try { m.invalidateSize(); } catch(e){} });
+  }
+  window.addEventListener('resize', function(){
+    clearTimeout(t);
+    t = setTimeout(invalidateAll, 150);
+  });
+})();
+</script>
+</html>

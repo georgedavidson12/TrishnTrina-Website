@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trish N Trina Performers Academy</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="Images/favicon_io/apple-touch-icon.png?v=2">
+  <link rel="icon" type="image/png" sizes="32x32" href="Images/favicon_io/favicon-32x32.png?v=2">
+  <link rel="icon" type="image/png" sizes="16x16" href="Images/favicon_io/favicon-16x16.png?v=2">
+  <link rel="manifest" href="Images/favicon_io/site.webmanifest?v=2">
+  <link rel="shortcut icon" href="Images/favicon_io/favicon.ico?v=2" type="image/x-icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* Base reset & font */
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f2f2f2;
+      color: #333;
+      text-align: center;
+    }
+
+    /* Header & logo */
+    header {
+      background-color: #ffffff;
+      padding: 0.5rem 0;
+      width: 100%;
+      border-bottom: none;
+    }
+    .banner-logo {
+      width: 100%;
+      text-align: center;
+    }
+    .banner-logo img {
+      display: block;
+      margin: 0 auto;
+      max-width: 320px;
+      height: auto;
+      max-height: 120px;
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 0.5rem 1rem;
+      background-color: #ffffff;
+      border-bottom: 4px solid #FFEB3B;
+    }
+    nav a {
+      text-decoration: none;
+      color: #111;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    nav a:hover {
+      color: #FFEB3B;
+    }
+
+    /* Section styling */
+    .section {
+      padding: 3rem 1rem;
+      background: #fff;
+      margin: 1rem auto;
+      max-width: 1000px;
+      box-sizing: border-box;
+      border-top: 15px solid #f2f2f2;
+    }
+    /* Remove border from the first section */
+    .section:first-of-type {
+      border-top: none;
+    }
+    .section h2 {
+      color: #FFEB3B;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .section p {
+      max-width: 800px;
+      margin: auto;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    /* Testimonials styling */
+    .testimonials-container {
+      display: flex;
+      gap: 4rem;            /* larger space */
+      flex-wrap: wrap;
+      padding: 0 1rem;      /* optional page padding */
+    }
+    .testimonial-column {
+      flex: 1 1 300px;     /* each column takes equal space, min 300px */
+      box-sizing: border-box;
+    }
+    .testimonial-column:first-child {
+      border-right: 2px solid #ccc; /* light grey divider */
+      padding-right: 2rem;
+    }
+    .testimonial-column:last-child {
+      padding-left: 2rem;
+    }
+    .testimonial-column h2 {
+      margin-top: 0;
+      color: #FFEB3B;
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+    .testimonial-column blockquote {
+      margin-bottom: 2rem;
+      border-left: 4px solid #FFEB3B; /* brand yellow */
+      padding-left: 1rem;
+      font-style: normal;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #222;
+    }
+
+    /* Footer */
+    footer {
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+    footer > div {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+    }
+
+    .video-gallery {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 700px) {
+      footer > div {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2rem;
+      }
+      footer > div > div {
+        padding: 0 !important;
+        text-align: left !important;
+        align-items: flex-start !important;
+      }
+      .play-overlay {
+        width: 56px;
+        height: 56px;
+        aspect-ratio: 1 / 1;
+        font-size: 24px;
+      }
+    }
+    footer a:hover {
+      color: #FFEB3B !important;
+    }
+
+    /* Make this page’s section full-width */
+    section.section {
+      max-width: 100% !important;
+      margin: 0 !important;
+      border-radius: 0;
+    }
+
+    /* Video wrapper with custom play button — GLOBAL */
+    .video-wrapper {
+      position: relative;
+      width: 220px;   /* fixed width */
+      height: 260px;  /* cap height to keep it short on desktop */
+      margin: 0 auto; /* center */
+    }
+    .video-wrapper video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 6px;
+      object-fit: contain; /* ensure whole video is visible within the capped box */
+      background: #000;    /* letterbox bars if needed */
+    }
+    /* Foreground cover image that sits above the video until play */
+    .video-wrapper .cover {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;   /* keep full logo visible */
+      background: #fff;      /* optional: white behind transparent areas */
+      border-radius: 6px;
+      z-index: 2;            /* above video, below play button */
+    }
+    .video-wrapper.playing .cover { display: none; }
+    .video-wrapper .play-overlay { z-index: 3; }
+    .play-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 64px;
+      height: 64px;
+      aspect-ratio: 1 / 1;   /* keep circle on mobile */
+      box-sizing: border-box;
+      padding: 0;            /* avoid layout inflation */
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      line-height: 1;        /* avoid vertical stretching */
+      color: #fff;
+      cursor: pointer;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+      transition: background 0.2s ease;
+    }
+    .play-overlay:hover { background: rgba(0,0,0,0.6); }
+    .play-overlay:focus { outline: 3px solid #FFEB3B; }
+
+    @media (max-width: 700px) {
+      .section {
+        padding: 2rem 1rem;
+      }
+      /* stack on mobile with a bit of space */
+      .testimonials-container {
+        flex-direction: column;
+        gap: 2rem;
+      }
+      .testimonial-column:first-child {
+        border-right: none;
+        padding-right: 0;
+      }
+      .testimonial-column:last-child {
+        padding-left: 0;
+      }
+    }
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-40XVRC4JZD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-40XVRC4JZD');
+  </script>
+</head>
+<body>
+
+  <header>
+    <div class="banner-logo">
+      <a href="index.html">
+        <img src="Images/Banner1.png" alt="Trish N Trina Logo">
+      </a>
+    </div>
+  </header>
+
+  <nav>
+    <a href="about.html">About Us</a>
+    <a href="teachers.html">Teachers</a>
+    <a href="syllabus.html">Syllabus</a>
+    <a href="timetable.html">Timetable</a>
+    <a href="information.html">Information</a>
+    <a href="testimonials.html">Testimonials</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+
+  <section class="section">
+    <div class="testimonials-container">
+      <div class="testimonial-column">
+        <h2>What Our Students Say</h2>
+        <!-- Testimonial goes here -->
+        <blockquote>
+          “I am forever grateful for all the memories and lessons I learnt.”<br>
+          <span style="display: block; margin-top: 0.5rem; font-size: 0.85rem; color: #666;">
+            — Becka Lowery, July 2024
+          </span>
+        </blockquote>
+        <blockquote>
+          “Tap class is so good for your body and soul. It’s kept me fit and seen me through some tough life challenges - better than therapy and most of all it’s always great fun. Would recommend!”<br>
+          <span style="display: block; margin-top: 0.5rem; font-size: 0.85rem; color: #666;">
+            — Hazel McGregor, August 2025
+          </span>
+        </blockquote>
+      </div>
+
+      <div class="testimonial-column">
+        <h2>What Our Parents Say</h2>
+        <blockquote>
+          “So many amazing memories and opportunities with TnT over the years. Taking Phoebe along to her first dance class when she was 3 years old was the best decision I made.”<br>
+          <span style="display: block; margin-top: 0.5rem; font-size: 0.85rem; color: #666;">
+            — Lisa Balsdon, July 2023
+          </span>
+        </blockquote>
+        <blockquote>
+          “We have so many happy memories over the years of Matthew and Jasmine's dancing. From a tap dancing penguin when Jasmine was 2 and Matthew wanting to join in because it looked so much fun to many trips to London. Can't imagine Monday nights without dancing! Thanks for everything you've done for our family!”<br>
+          <span style="display: block; margin-top: 0.5rem; font-size: 0.85rem; color: #666;">
+            — Gillian Tyerman, 2023
+          </span>
+        </blockquote>
+        <blockquote>
+          “Absolutely brilliant class with amazing teachers and the kids are all so hard working and welcoming. My girls love going and we've never looked back, their confidence has shot through the roof, and they have made some friends to last a lifetime.”<br>
+          <span style="display: block; margin-top: 0.5rem; font-size: 0.85rem; color: #666;">
+            — Beth Kenny, June 2025
+          </span>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 style="color:#FFEB3B; font-size:2rem; margin-bottom:1rem; text-align:center;">
+      Hear Directly From Our Students
+    </h2>
+    <p style="max-width:800px; margin:0 auto 2rem; font-size:1.1rem; line-height:1.6; color:#333; text-align:center;">
+      Watch some of our students share their experiences in their own words.
+    </p>
+    <div class="video-gallery">
+      <div class="video-wrapper">
+        <img class="cover" src="Images/No Words.png" alt="TnT logo cover">
+        <button class="play-overlay" aria-label="Play student review video">&#9658;</button>
+        <video playsinline preload="none">
+          <source src="Images/review1.mp4" type="video/mp4">
+          Sorry, your browser doesn’t support embedded videos.
+        </video>
+      </div>
+      <div class="video-wrapper">
+        <img class="cover" src="Images/No Words.png" alt="TnT logo cover">
+        <button class="play-overlay" aria-label="Play student review video">&#9658;</button>
+        <video playsinline preload="none">
+          <source src="Images/review2.mp4" type="video/mp4">
+          Sorry, your browser doesn’t support embedded videos.
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background: #111; color: #fff; padding: 2rem; font-size: 0.9rem;">
+    <div style="max-width:1000px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:2rem;">
+      <div style="flex:1; min-width:0; text-align:left;">
+        <p style="text-align: left;">
+          <img src="Images/phone.png" alt="Phone" style="vertical-align: middle; height: 24px; margin-right: 8px;">
+          <a href="tel:07761633157" style="color: #fff; text-decoration: none;">07761 633157</a>
+        </p>
+        <p style="text-align: left;">
+          <img src="Images/email.png" alt="Email" style="vertical-align: middle; height: 24px; margin-right: 8px;">
+          <a href="mailto:trishdanceacademy@gmail.com" style="color: #fff; text-decoration: none;">trishdanceacademy@gmail.com</a>
+        </p>
+        <div style="margin-top: 1rem; text-align: left;">
+          <p style="margin: 0.5rem 0; font-size: 0.85rem;">
+            <a href="https://www.facebook.com/trishntrina" style="color: #fff; text-decoration: none; display: inline-flex; align-items: center; margin-right: 16px;">
+              <img src="Images/facebook.png" alt="Facebook" style="height: 24px; margin-right: 6px;">
+              Facebook
+            </a>
+            <a href="https://www.instagram.com/tntperformersacademy/" style="color: #fff; text-decoration: none; display: inline-flex; align-items: center;">
+              <img src="Images/instagram.png" alt="Instagram" style="height: 24px; margin-right: 6px;">
+              Instagram
+            </a>
+          </p>
+        </div>
+      </div>
+      <div style="flex:1; min-width:0; text-align:right;">
+        <p>&copy; 2025 Trish N Trina Performers Academy</p>
+        <p>Website designed by George Davidson</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.video-wrapper').forEach(function(wrapper){
+      var video = wrapper.querySelector('video');
+      var btn = wrapper.querySelector('.play-overlay');
+      var cover = wrapper.querySelector('.cover');
+
+      function startPlayback(){
+        if (!video.controls) video.controls = true; // show controls after first play
+        wrapper.classList.add('playing'); // hides cover via CSS
+        btn.style.display = 'none';
+        video.play();
+      }
+
+      btn.addEventListener('click', function(e){ e.stopPropagation(); startPlayback(); });
+
+      // If the user plays via native controls (e.g., keyboard), keep UI in sync
+      video.addEventListener('play', function(){
+        wrapper.classList.add('playing');
+        btn.style.display = 'none';
+      });
+
+      // Show button again if paused mid-way (but keep cover hidden so frame stays visible)
+      video.addEventListener('pause', function(){
+        if (video.currentTime < video.duration) btn.style.display = '';
+      });
+
+      // When the video ends, reset to initial state (cover + button)
+      video.addEventListener('ended', function(){
+        wrapper.classList.remove('playing');
+        btn.style.display = '';
+        if (video.controls) video.controls = false;
+        video.currentTime = 0;
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trish N Trina Performers Academy</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="Images/favicon_io/apple-touch-icon.png?v=2">
+  <link rel="icon" type="image/png" sizes="32x32" href="Images/favicon_io/favicon-32x32.png?v=2">
+  <link rel="icon" type="image/png" sizes="16x16" href="Images/favicon_io/favicon-16x16.png?v=2">
+  <link rel="manifest" href="Images/favicon_io/site.webmanifest?v=2">
+  <link rel="shortcut icon" href="Images/favicon_io/favicon.ico?v=2" type="image/x-icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f2f2f2;
+      color: #333;
+      text-align: center;
+    }
+
+    header {
+      background-color: #ffffff;
+      padding: 0.5rem 0 0.1rem 0;
+      width: 100%;
+      position: relative;
+    }
+
+    .banner-logo {
+      width: 100%;
+      text-align: center;
+      margin: 0;
+      padding-bottom: 0;
+    }
+
+    .banner-logo img {
+      display: block;
+      margin: 0 auto;
+      max-width: 320px;
+      height: auto;
+      max-height: 120px;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 0.5rem 1rem;
+      background-color: #ffffff;
+      border-bottom: 4px solid #FFEB3B;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #111;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    nav a:hover {
+      color: #FFEB3B;
+    }
+
+    .carousel {
+      position: relative;
+      height: 400px;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      /* background-size removed, now set inline */
+      background-color: white;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .slide::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      z-index: 0;
+    }
+
+    .slide > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .slide.active {
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .overlay {
+      position: absolute;
+      bottom: 20%;
+      left: 10%;
+      color: white;
+      background-color: rgba(0,0,0,0.5);
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      max-width: 80%;
+    }
+
+    .slide-button {
+      display: inline-block;
+      margin-top: 1rem;
+      background: #FFEB3B;
+      color: white;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+
+    .section {
+      padding: 1.0rem 1rem 3rem 1rem;
+      background: #fff;
+      margin-top: 0;
+      border-top: 15px solid #f2f2f2; /* Light grey border above each section */
+    }
+
+    /* Remove border from the first section */
+    .section:first-of-type {
+      border-top: none;
+    }
+
+    .section h2 {
+      color: #FFEB3B;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .section p {
+      max-width: 800px;
+      margin: auto;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .cta-button {
+      display: inline-block;
+      margin-top: 1rem;
+      background: #FFEB3B;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 4px;
+    }
+
+    footer {
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+
+    footer > div {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem; /* Increase gap between columns */
+    }
+
+    @media (max-width: 700px) {
+      footer > div {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2rem; /* More vertical space on mobile */
+      }
+      footer > div > div {
+        padding: 0 !important;
+        text-align: left !important;
+        align-items: flex-start !important;
+      }
+    }
+
+    .carousel-nav {
+      position: absolute;
+      left: 20px;
+      bottom: 20px;
+      top: auto;
+      transform: none;
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      z-index: 2;
+    }
+
+    .carousel-dot {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .carousel-dot:hover,
+    .carousel-dot.active {
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.4);
+      color: white;
+      border: none;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      font-size: 2rem;
+      z-index: 3;
+      border-radius: 50%;
+      transition: background-color 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      transition: background-color 0.3s ease, opacity 0.3s ease;
+    }
+
+    .carousel:hover .carousel-arrow {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .carousel-arrow:hover {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .carousel-arrow.left {
+      left: 20px;
+    }
+
+    .carousel-arrow.right {
+      right: 20px;
+    }
+
+    /* Footer social links hover color */
+    footer a:hover {
+      color: #FFEB3B !important;
+    }
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-40XVRC4JZD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-40XVRC4JZD');
+  </script>
+</head>
+<body>
+
+  <header>
+    <div class="banner-logo">
+      <a href="index.html">
+        <img src="Images/Banner1.png" alt="Trish N Trina Logo">
+      </a>
+    </div>
+  </header>
+
+  <nav>
+    <a href="about.html">About Us</a>
+    <a href="teachers.html">Teachers</a>
+    <a href="syllabus.html">Syllabus</a>
+    <a href="timetable.html">Timetable</a>
+    <a href="information.html">Information</a>
+    <a href="testimonials.html">Testimonials</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+
+  <!-- Syllabus Section -->
+  <section class="section" id="syllabus-intro">
+    <h2>Our Syllabi</h2>
+    <p>At Trish N Trina Performers Academy we guide our students through two industry‑recognised examination frameworks:</p>
+    <p>
+      <strong>NCDTA</strong> – the <strong>Northern Counties Dance Teachers’ Association</strong>, which we have followed since the school opened, and<br>
+      <strong>I‑PATH</strong> – <strong>International Performing Arts & Theatre</strong>, newly added to broaden the range of graded opportunities we can offer.
+    </p>
+    <p>
+      <strong>International Dance Rewards (IDR)</strong> – IDR is a fun badge and certificate scheme that offers structured progression through every aspect of dance.
+    </p>
+  </section>
+
+  <section class="section" id="ncdta">
+    <h2>NCDTA (Northern Counties Dance Teachers’ Association)</h2>
+    <p>The <strong>NCDTA</strong> is a <strong>non‑profit organisation</strong> supporting dance in all its forms, with members across the UK and beyond. It provides <strong>graded and vocational examinations</strong> and <strong>teacher qualifications</strong> in disciplines such as <strong>Ballroom</strong>, <strong>Sequence</strong>, <strong>Latin American</strong>, <strong>Salsa</strong>, <strong>Country & Western</strong>, <strong>Street/Hip Hop/Freestyle</strong>, <strong>Cheer Dance</strong>, <strong>Modern Stage/Jazz</strong>, <strong>Ballet</strong>, and <strong>Tap</strong>.</p>
+    <p>Students can progress through <strong>structured grades</strong> assessed by <strong>external examiners</strong>, gaining certificates that recognise their <strong>technique</strong>, <strong>musicality</strong>, and <strong>performance skills</strong>.</p>
+  </section>
+
+  <section class="section" id="i-path">
+    <h2>I‑PATH (International Performing Arts & Theatre)</h2>
+    <p><strong>I‑PATH</strong> is one of the <strong>fastest‑growing performing‑arts examination boards</strong>, offering <strong>Ofqual‑regulated graded and vocational exams</strong> from <strong>Entry Level</strong> to <strong>Grade 8</strong>, with <strong>Grades 6+</strong> carrying <strong>UCAS points</strong>.</p>
+    <p>Disciplines available include <strong>Ballet</strong>, <strong>Jazz</strong>, <strong>Contemporary</strong>, <strong>Commercial</strong>, <strong>Street</strong>, <strong>Lyrical</strong>, <strong>Musical Theatre</strong>, <strong>Singing</strong>, and both <strong>Rhythm</strong> and <strong>Theatre Tap</strong>, with assessments available <strong>face‑to‑face</strong> or <strong>by video</strong>.</p>
+  </section>
+  <section class="section" id="idr">
+    <h2>International Dance Rewards (IDR)</h2>
+    <p>We are a proud <strong>member school</strong> of the <strong>International Dance Rewards</strong> programme &ndash; a beautifully designed <strong>badge&nbsp;and&nbsp;certificate system</strong> that offers <strong>structured progression</strong> through every aspect of dance, from <strong>technique</strong> and <strong>performance</strong> to <strong>manners</strong> and <strong>uniform</strong>. This inclusive scheme focuses on <strong>regular, stress‑free, in‑house assessment</strong>, helping students stay <strong>motivated</strong>, <strong>happy</strong> and <strong>inspired</strong>.<!-- citeturn0search0turn0search1 --></p>
+    <p>Our <strong>younger pupils</strong> have already <strong>completed their first IDR awards</strong>, proudly wearing their new badges and certificates.</p>
+  </section>
+
+  <footer style="background: #111; color: #fff; padding: 2rem; font-size: 0.9rem;">
+    <div style="max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 2rem;">
+      <div style="flex: 1; min-width: 250px; margin-bottom: 1rem;">
+        <p style="text-align: left;">
+          <img src="Images/phone.png" alt="Phone" style="vertical-align: middle; height: 24px; margin-right: 8px;">
+          <a href="tel:07761633157" style="color: #fff; text-decoration: none;">07761 633157</a>
+        </p>
+        <p style="text-align: left;">
+          <img src="Images/email.png" alt="Email" style="vertical-align: middle; height: 24px; margin-right: 8px;">
+          <a href="mailto:trishdanceacademy@gmail.com" style="color: #fff; text-decoration: none;">trishdanceacademy@gmail.com</a>
+        </p>
+        <div style="margin-top: 1rem; text-align: left;">
+          <p style="margin: 0.5rem 0; font-size: 0.85rem;">
+            <a href="https://www.facebook.com/trishntrina" style="color: #fff; text-decoration: none; display: inline-flex; align-items: center; margin-right: 16px;">
+              <img src="Images/facebook.png" alt="Facebook" style="height: 24px; margin-right: 6px;">
+              Facebook
+            </a>
+            <a href="https://www.instagram.com/tntperformersacademy/" style="color: #fff; text-decoration: none; display: inline-flex; align-items: center;">
+              <img src="Images/instagram.png" alt="Instagram" style="height: 24px; margin-right: 6px;">
+              Instagram
+            </a>
+          </p>
+        </div>
+      </div>
+      <div style="flex: 1; min-width: 250px; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; text-align: right; margin-bottom: 1rem;">
+        <p>&copy; 2025 Trish N Trina Performers Academy</p>
+        <p>Website designed by George Davidson</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+  const dots = document.querySelectorAll('.carousel-dot');
+
+  function showSlide(index) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('mouseenter', () => {
+      const index = parseInt(dot.getAttribute('data-index'));
+      showSlide(index);
+    });
+  });
+
+  let intervalId = setInterval(() => {
+    showSlide((current + 1) % slides.length);
+  }, 5000);
+
+  function resetInterval() {
+    clearInterval(intervalId);
+    intervalId = setInterval(() => {
+      showSlide((current + 1) % slides.length);
+    }, 5000);
+  }
+
+  function showPreviousSlide() {
+    showSlide((current - 1 + slides.length) % slides.length);
+    resetInterval();
+  }
+
+  function showNextSlide() {
+    showSlide((current + 1) % slides.length);
+    resetInterval();
+  }
+</script>
+</html>
