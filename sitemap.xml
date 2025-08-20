@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Root -->
+  <url>
+    <loc>https://trishntrina.co.uk/</loc>
+  </url>
+
+  <!-- Main pages -->
+  <url><loc>https://trishntrina.co.uk/about.html</loc></url>
+  <url><loc>https://trishntrina.co.uk/teachers.html</loc></url>
+  <url><loc>https://trishntrina.co.uk/syllabus.html</loc></url>
+  <url><loc>https://trishntrina.co.uk/timetable.html</loc></url>
+  <url><loc>https://trishntrina.co.uk/information.html</loc></url>
+  <url><loc>https://trishntrina.co.uk/testimonials.html</loc></url>
+  <url><loc>https://trishntrina.co.uk/contact.html</loc></url>
+</urlset>
