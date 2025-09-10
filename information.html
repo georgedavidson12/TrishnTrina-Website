@@ -357,7 +357,7 @@
         <ul style="list-style: none; padding: 0; margin: .5rem 0 0 0;">
           <!-- Grade 5 Zip: place a file at /downloads/Grade5_Music.zip -->
           <li style="margin:.5rem 0;">
-            <a href="/downloads/Grade5_Music.zip" download>NCDTA Grade 5 Music</a>
+            <a href="/downloads/Grade_5_music.zip" download>NCDTA Grade 5 Music</a>
             <span style="font-size:.9rem; color:#666; margin-left:.5rem;">(ZIP download)</span>
           </li>
           <li style="margin:.5rem 0;">
@@ -575,6 +575,35 @@ function prepareForHashRaw(s) {
   function showDownloadsArea() {
     if (dlArea) dlArea.style.display = "block";
     if (dlGate) dlGate.style.display = "none";
+    sanitizeDownloadLinks();
+  }
+
+  // Fix common mistaken extensions like .zip.html, .pdf.html, etc., and ensure download attr
+  function sanitizeDownloadLinks() {
+    if (!dlArea) return;
+    const anchors = dlArea.querySelectorAll('a[href]');
+    anchors.forEach(a => {
+      try {
+        let href = a.getAttribute('href');
+        if (!href) return;
+        // Only adjust client-side for known file types
+        const fixes = ['.zip.html', '.pdf.html', '.docx.html', '.pptx.html'];
+        for (const suffix of fixes) {
+          if (href.endsWith(suffix)) {
+            href = href.slice(0, -5); // remove trailing '.html'
+            a.setAttribute('href', href);
+            break;
+          }
+        }
+        // Ensure browser treats link as download
+        if (!a.hasAttribute('download')) a.setAttribute('download', '');
+        // For safety, add rel to any target
+        if (a.getAttribute('target') === '_blank') {
+          const rel = a.getAttribute('rel') || '';
+          if (!/noopener|noreferrer/.test(rel)) a.setAttribute('rel', (rel + ' noopener noreferrer').trim());
+        }
+      } catch (e) { /* noop */ }
+    });
   }
 
   // Allow-list of acceptable hashes (canonical + common mobile variants)
